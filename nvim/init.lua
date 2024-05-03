@@ -20,6 +20,7 @@
 =====================================================================
 =====================================================================
 
+
 What is Kickstart?
 
   Kickstart.nvim is *not* a distribution.
@@ -83,6 +84,10 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now! :)
 --]]
+
+if not vim then
+  vim = {}
+end
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -156,6 +161,14 @@ vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+
+-- keymap for tabs
+vim.keymap.set('n', '<Tab>', 'gt')
+vim.keymap.set('n', '<S-Tab>', 'gT')
+--create new tab
+vim.keymap.set('n', 't', ':tabnew<cr>')
+--delete a tab
+vim.keymap.set('n', 'T', ':tabclose<cr>')
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -597,10 +610,17 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
+
+      -- NOTE: ACA SE PONE LO REFERIDO AL LANGUAGE SERVER PROTOCOL
+
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('java').setup {}
       require('lspconfig').jdtls.setup {}
+
+      require('lspconfig').emmet_language_server.setup {}
+
+      -- WARNING:  ACAA TERMINA
 
       require('mason-lspconfig').setup {
         handlers = {
@@ -663,12 +683,12 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
